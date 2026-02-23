@@ -8,13 +8,13 @@
 단순 게임 제작이 아닌,
 군집 처리 아키텍처 설계와 성능 실험에 초점을 둔 기술 연구 프로젝트입니다.
 
-### Roadmap
- 200 Enemy Object Pool 구현
- Tick 분산 업데이트 시스템
- 거리 기반 LOD 전환
- Animator 비용 비교 실험
- NavMesh 제거 후 군집 이동 구조 설계
- 300~500 Enemy 안정화 실험
+### 🎯 Roadmap
+ 200 Enemy Object Pool 구현  
+ Tick 분산 업데이트 시스템  
+ 거리 기반 LOD 전환  
+ Animator 비용 비교 실험  
+ NavMesh 제거 후 군집 이동 구조 설계  
+ 300~500 Enemy 안정화 실험  
 
 ###  🔍 Research Focus
 이 프로젝트는 다음 질문에 대한 실험을 포함합니다:
