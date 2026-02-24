@@ -23,14 +23,26 @@ namespace CrowdCombat.Player
         [SerializeField] protected InputActionAsset inputActions;
         [SerializeField] protected string moveActionName = "Move";
         [SerializeField] protected string jumpActionName = "Jump";
+        [SerializeField] protected string attackActionName = "Attack";
+
+        [Header("Attack")]
+        [SerializeField] protected GameObject attackAreaPrefab;
+        [SerializeField] protected float attackDistance = 1.5f;
+        [SerializeField] protected float attackHeightOffset = 0.5f;
+        [SerializeField] protected int maxComboCount = 4;
+        [SerializeField] protected float comboResetTime = 0.4f;
 
         protected Vector2 moveInput;
         protected bool jumpInput;
         protected InputAction moveAction;
         protected InputAction jumpAction;
+        protected InputAction attackAction;
         protected Rigidbody rb;
         protected bool useRigidbody = true;
         protected bool isGrounded;
+        protected bool isJumping;
+        protected int currentComboIndex;
+        protected float lastAttackTime;
 
         protected virtual void Awake()
         {
@@ -44,6 +56,7 @@ namespace CrowdCombat.Player
                 {
                     moveAction = map.FindAction(moveActionName);
                     jumpAction = map.FindAction(jumpActionName);
+                    attackAction = map.FindAction(attackActionName);
                 }
             }
 
@@ -57,12 +70,14 @@ namespace CrowdCombat.Player
         {
             moveAction?.Enable();
             jumpAction?.Enable();
+            attackAction?.Enable();
         }
 
         protected virtual void OnDisable()
         {
             moveAction?.Disable();
             jumpAction?.Disable();
+            attackAction?.Disable();
         }
 
         protected virtual void Update()
@@ -72,6 +87,12 @@ namespace CrowdCombat.Player
             
             // 지면 체크
             CheckGrounded();
+
+            // 공격 입력
+            if (attackAction != null && attackAction.WasPressedThisFrame())
+            {
+                PerformAttack();
+            }
         }
 
         protected virtual void FixedUpdate()
@@ -82,8 +103,15 @@ namespace CrowdCombat.Player
                  if (useRigidbody && rb != null)
                 {
                     rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce, rb.linearVelocity.z);
+                    isJumping = true;
                 }
                 jumpInput = false;
+            }
+
+            // 점프가 끝났는지 체크 (위로 상승이 멈췄을 때)
+            if (isJumping && useRigidbody && rb != null && rb.linearVelocity.y <= 0f)
+            {
+                isJumping = false;
             }
 
             // 이동 처리
@@ -91,21 +119,28 @@ namespace CrowdCombat.Player
             {
                 if (useRigidbody && rb != null)
                     rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
-                return;
+            }
+            else
+            {
+                // 카메라 기준 이동 방향 (Y 무시) - 플레이어는 회전하지 않음
+                Vector3 forward = GetCameraForwardXZ();
+                Vector3 right = GetCameraRightXZ();
+                Vector3 moveDir = (forward * moveInput.y + right * moveInput.x).normalized;
+
+                if (moveDir.sqrMagnitude > 0.01f)
+                {
+                    Vector3 velocity = moveDir * moveSpeed;
+                    if (useRigidbody && rb != null)
+                        rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
+                    else
+                        transform.position += velocity * Time.deltaTime;
+                }
             }
 
-            // 카메라 기준 이동 방향 (Y 무시) - 플레이어는 회전하지 않음
-            Vector3 forward = GetCameraForwardXZ();
-            Vector3 right = GetCameraRightXZ();
-            Vector3 moveDir = (forward * moveInput.y + right * moveInput.x).normalized;
-
-            if (moveDir.sqrMagnitude > 0.01f)
+            // 내가 점프하지 않는 이상 몬스터 등에 떠밀려 위로 올라가지 않도록 Y속도 제한
+            if (!isJumping && useRigidbody && rb != null && rb.linearVelocity.y > 0f)
             {
-                Vector3 velocity = moveDir * moveSpeed;
-                if (useRigidbody && rb != null)
-                    rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
-                else
-                    transform.position += velocity * Time.deltaTime;
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             }
         }
 
@@ -147,6 +182,37 @@ namespace CrowdCombat.Player
                 return r.normalized;
             }
             return transform.right;
+        }
+
+        protected virtual void PerformAttack()
+        {
+            if (attackAreaPrefab == null)
+                return;
+
+            float now = Time.time;
+            if (now - lastAttackTime > comboResetTime)
+            {
+                currentComboIndex = 0;
+            }
+
+            currentComboIndex = Mathf.Clamp(currentComboIndex + 1, 1, maxComboCount);
+            lastAttackTime = now;
+
+            Vector3 forward = GetCameraForwardXZ();
+            if (forward.sqrMagnitude < 0.0001f)
+                forward = transform.forward;
+
+            Vector3 spawnPosition = transform.position
+                                   + Vector3.up * attackHeightOffset
+                                   + forward * attackDistance;
+
+            Quaternion rotation = Quaternion.LookRotation(forward, Vector3.up);
+            GameObject go = Instantiate(attackAreaPrefab, spawnPosition, rotation);
+
+            if (go != null && go.TryGetComponent<PlayerAttackArea>(out var area))
+            {
+                area.Initialize(transform, currentComboIndex);
+            }
         }
 
     }
