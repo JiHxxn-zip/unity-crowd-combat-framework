@@ -168,6 +168,16 @@ namespace CrowdCombat.Enemy
         }
 
         /// <summary>
+        /// 진공 폭탄 등 외부에서 velocity를 지정하고 그 동안 AI 이동을 억제합니다.
+        /// </summary>
+        public virtual void ApplyPull(Vector3 velocity, float stunDuration)
+        {
+            if (!useRigidbody || rb == null) return;
+            rb.linearVelocity = velocity;
+            hitReactionTimer  = stunDuration;
+        }
+
+        /// <summary>
         /// 플레이어 공격 등에 의해 위로 띄워질 때 사용.
         /// </summary>
         public virtual void ApplyKnockUp(float? customVelocity = null)

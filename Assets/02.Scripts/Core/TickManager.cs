@@ -10,10 +10,15 @@ namespace CrowdCombat.Core
     public class TickManager : MonoBehaviour
     {
         private static TickManager _instance;
+        private static bool _isQuitting;
+
         public static TickManager Instance
         {
             get
             {
+                if (_isQuitting)
+                    return null;
+
                 if (_instance == null)
                 {
                     GameObject go = new GameObject("TickManager");
@@ -41,6 +46,16 @@ namespace CrowdCombat.Core
             }
             _instance = this;
             DontDestroyOnLoad(gameObject);
+        }
+        private void OnApplicationQuit()
+        {
+            _isQuitting = true;
+        }
+
+        private void OnDestroy()
+        {
+            if (_instance == this)
+                _instance = null;
         }
 
         private void Update()
@@ -95,6 +110,8 @@ namespace CrowdCombat.Core
         /// </summary>
         public void Register(ITickable tickable)
         {
+            if (_isQuitting) return;
+
             if (tickable != null && !tickables.Contains(tickable))
             {
                 tickables.Add(tickable);
@@ -106,6 +123,7 @@ namespace CrowdCombat.Core
         /// </summary>
         public void Unregister(ITickable tickable)
         {
+            if (_isQuitting) return;
             tickables.Remove(tickable);
         }
 

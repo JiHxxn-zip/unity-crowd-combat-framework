@@ -190,7 +190,7 @@ namespace CrowdCombat.Player
                 return;
 
             float now = Time.time;
-            if (now - lastAttackTime > comboResetTime)
+            if (now - lastAttackTime > comboResetTime || currentComboIndex >= maxComboCount)
             {
                 currentComboIndex = 0;
             }
