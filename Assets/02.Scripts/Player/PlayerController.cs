@@ -49,6 +49,9 @@ namespace CrowdCombat.Player
             TryGetComponent(out rb);
             useRigidbody = rb != null;
 
+            if (rb != null)
+                rb.freezeRotation = true;
+
             if (inputActions != null)
             {
                 var map = inputActions.FindActionMap("Player");
@@ -83,7 +86,9 @@ namespace CrowdCombat.Player
         protected virtual void Update()
         {
             moveInput = moveAction != null ? moveAction.ReadValue<Vector2>() : Vector2.zero;
-            jumpInput = jumpAction != null && jumpAction.WasPressedThisFrame();
+            // FixedUpdate 타이밍 차이로 입력이 유실되지 않도록 true 시에만 덮어씀
+            if (jumpAction != null && jumpAction.WasPressedThisFrame())
+                jumpInput = true;
             
             // 지면 체크
             CheckGrounded();
@@ -149,7 +154,8 @@ namespace CrowdCombat.Player
             // 캡슐 콜라이더나 레이캐스트로 지면 체크
             if (TryGetComponent<CapsuleCollider>(out var col))
             {
-                Vector3 origin = transform.position + Vector3.up * (col.height * 0.5f - col.radius);
+                // col.center.y 포함해서 실제 캡슐 하단 구의 중심을 원점으로 사용
+                Vector3 origin = transform.position + new Vector3(0f, col.center.y - (col.height * 0.5f - col.radius), 0f);
                 isGrounded = Physics.Raycast(origin, Vector3.down, groundCheckDistance + col.radius, groundLayer);
             }
             else

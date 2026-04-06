@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 4457671164543549060}
   - component: {fileID: 7951970171916717652}
   - component: {fileID: 3079576547289705408}
-  - component: {fileID: 1849724344141991090}
   - component: {fileID: 7808400156610668914}
   - component: {fileID: 3228626995644083853}
+  - component: {fileID: 8420702127551240655}
   - component: {fileID: 5414446152612818053}
+  - component: {fileID: 5613919823574023713}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -44,7 +45,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3554995711906594030}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &3079576547289705408
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -94,27 +95,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1849724344141991090
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3554995711906594030}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7808400156610668914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,6 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CrowdCombat.Weapon.VacuumBombLauncher
   projectilePrefab: {fileID: 9177180594783498050, guid: 14e4fbe19ff5773439709b52808dd3c7, type: 3}
+  poolSize: 5
   launchPoint: {fileID: 4457671164543549060}
   launchHeightOffset: 1
   maxRange: 30
@@ -166,6 +147,29 @@ MonoBehaviour:
   cooldown: 2
   inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   fireActionName: Fire
+--- !u!114 &8420702127551240655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3554995711906594030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25df3960fb45b174485db415d559b579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CrowdCombat.Player.GroundSlamSkill
+  slamDownSpeed: 25
+  shockwaveRadius: 5
+  slamDamage: 50
+  airborneVelocity: 10
+  cooldown: 2
+  groundCheckDistance: 0.15
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 65
+  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  skillActionName: GroundSlam
 --- !u!54 &5414446152612818053
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -193,3 +197,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &5613919823574023713
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3554995711906594030}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.55
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
