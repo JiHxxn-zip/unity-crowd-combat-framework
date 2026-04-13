@@ -168,6 +168,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
+  - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -242,13 +243,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.1057103, y: -0.78130054, z: 0.13776435, w: 0.599513}
+  m_LocalPosition: {x: 4.45, y: 4, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 20, y: -105, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,6 +314,76 @@ MonoBehaviour:
   mouseSensitivity: 0.1
   inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   lookActionName: Look
+  maxShakeOffset: 0.4
+--- !u!114 &330585549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ec260008a4034546a615ee73cfe5ab4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CrowdCombat.Camera.CinematicRecorder
+  clipName: Test_Ji
+  spaceMode: 1
+  targetMemo: Player
+  localTarget: {fileID: 48893256}
+  defaultEaseType: 3
+  timeStep: 0.5
+  defaultFov: 60
+  pathColor: {r: 0, g: 1, b: 1, a: 1}
+  frameColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  frameRadius: 0.12
+  forwardLength: 0.6
+  frames:
+  - time: 0
+    px: 0
+    py: 3.5
+    pz: -8
+    rx: 20
+    ry: 0
+    rz: 0
+    fov: 60
+    easeType: 3
+  - time: 1
+    px: 0
+    py: 1.49
+    pz: -2.47
+    rx: 20
+    ry: 0
+    rz: 0
+    fov: 60
+    easeType: 3
+  - time: 1.5
+    px: 2.83
+    py: 1.49
+    pz: -2.47
+    rx: 20.000002
+    ry: 313.1
+    rz: 0
+    fov: 60
+    easeType: 3
+  - time: 2
+    px: 2.83
+    py: 1.49
+    pz: -2.47
+    rx: 348.6
+    ry: 313.1
+    rz: 0
+    fov: 60
+    easeType: 3
+  - time: 2.5
+    px: 4.45
+    py: 2.5
+    pz: 1.5
+    rx: 20
+    ry: 255
+    rz: 0.0000009085669
+    fov: 60
+    easeType: 3
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,6 +738,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 543978731}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &768086840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 768086842}
+  - component: {fileID: 768086841}
+  m_Layer: 0
+  m_Name: CameraManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &768086841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768086840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef38b277928fa6e45b7b8936a0c95e20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CrowdCombat.Camera.CameraManager
+  thirdPersonCamera: {fileID: 330585548}
+  cinematicPlayer: {fileID: 859372015}
+--- !u!4 &768086842
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768086840}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,6 +833,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &859372007 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3554995711906594030, guid: 56e555e844138974d82a11ea97fb0b0c, type: 3}
+  m_PrefabInstance: {fileID: 1992676259}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &859372015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859372007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e29981e015519d040841d4fbea670153, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CrowdCombat.Camera.CinematicPlayer
+  thirdPersonCamera: {fileID: 330585548}
+  blendInDuration: 0.25
+  blendOutDuration: 0.25
+  pauseTimeOnPlay: 0
 --- !u!1 &1025589486
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,7 +1125,7 @@ Transform:
   m_GameObject: {fileID: 1490140058}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.50994, z: 0.9487}
+  m_LocalPosition: {x: -0, y: 0.5, z: 1}
   m_LocalScale: {x: 5.4613, y: 1, z: 4.0015}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1207,7 +1345,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3554995711906594030, guid: 56e555e844138974d82a11ea97fb0b0c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 859372015}
   m_SourcePrefab: {fileID: 100100000, guid: 56e555e844138974d82a11ea97fb0b0c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -1222,3 +1363,4 @@ SceneRoots:
   - {fileID: 1992676259}
   - {fileID: 132595349}
   - {fileID: 1025589488}
+  - {fileID: 768086842}

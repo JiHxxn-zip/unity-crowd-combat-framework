@@ -1,4 +1,5 @@
 using UnityEngine;
+using CrowdCombat.Camera;
 using CrowdCombat.Enemy;
 
 namespace CrowdCombat.Player
@@ -79,10 +80,12 @@ namespace CrowdCombat.Player
             if (comboIndex >= 4)
             {
                 monster.ApplyLaunchHit(dir);
+                CameraManager.Instance?.TriggerHitEffect(0.10f, 0.8f);
             }
             else
             {
                 monster.ApplyLightHit(dir);
+                CameraManager.Instance?.TriggerHitEffect(0.04f, 0.3f);
             }
         }
     }

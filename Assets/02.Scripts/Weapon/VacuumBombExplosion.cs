@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using CrowdCombat.Camera;
 using CrowdCombat.Core;
 using CrowdCombat.Enemy;
 
@@ -55,6 +56,8 @@ namespace CrowdCombat.Weapon
 
         private void ApplyShockwave(Vector3 center, GameObject instigator)
         {
+            CameraManager.Instance?.TriggerHitEffect(0.08f, 0.6f);
+
             int hitCount = Physics.OverlapSphereNonAlloc(center, explosionRadius, _colliders, enemyLayer);
 
             for (int i = 0; i < hitCount; i++)

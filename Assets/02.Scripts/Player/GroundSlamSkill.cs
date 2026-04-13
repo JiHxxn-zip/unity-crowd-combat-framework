@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using CrowdCombat.Camera;
 using CrowdCombat.Core;
 using CrowdCombat.Enemy;
 
@@ -88,6 +89,9 @@ namespace CrowdCombat.Player
             isSlamming = true;
             lastSlamTime = Time.time;
 
+            // 시네마틱 재생 (pauseTimeOnPlay = true면 게임 정지 → 공중에 멈춘 채 카메라가 돔)
+            CameraManager.Instance?.PlayCinematic("Test_Ji", transform);
+
             if (rb != null)
             {
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, -slamDownSpeed, rb.linearVelocity.z);
@@ -99,6 +103,8 @@ namespace CrowdCombat.Player
         /// </summary>
         private void OnSlamLand()
         {
+            CameraManager.Instance?.TriggerHitEffect(0.12f, 1.0f);
+
             Collider[] hits = Physics.OverlapSphere(transform.position, shockwaveRadius);
 
             foreach (Collider hit in hits)
